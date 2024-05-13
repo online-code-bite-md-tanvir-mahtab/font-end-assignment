@@ -1,0 +1,135 @@
+{% include "header.html" %}
+<section class="text-gray-600 body-font">
+    <form action="" method="post">
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+                
+                <input type="text" id="airport-code" name="airport-code" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="LHR">
+              </div>
+              
+              <div class="relative flex-grow w-full">
+                <input type="text" id="airport-code" name="airport-code" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="CDG">
+              </div>
+              
+            <div class="relative flex-grow w-full">
+                <input type="date" id="departure-date" name="departure-date" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              </div>
+              <div class="relative flex-grow w-full">
+                <input type="number" id="day-minus" name="day-minus" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" min="1" max="30" placeholder="Enter number of days">
+              </div>
+              <div class="relative flex-grow w-full">
+                <input type="number" id="day-plus" name="day-plus" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" min="1" max="30" placeholder="Enter number of days">
+              </div>
+              
+              <div class="relative flex-grow w-full">
+                <select id="select-option" name="select-option" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                  <option value="day-before">Day Before</option>
+                  <option value="day-after">Day After</option>
+                  <option value="any-time">Any Time</option>
+                </select>
+              </div>
+              
+              
+              <div class="relative flex-grow w-full">
+                <h1 class="sm:text-3xl">+</h1>
+              </div>
+              <div class="relative flex-grow w-full">
+                <label for="num-adults" class="leading-7 text-sm text-gray-600">Adults (ADT)</label>
+                <select id="num-adults" name="num-adults" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <!-- Add more options as needed -->
+                </select>
+              </div>
+              
+              
+              <div class="relative flex-grow w-full">
+                <input type="number" id="day-plus" name="day-plus" class="w-full rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" min="1" max="30" placeholder="">
+              </div>
+            
+          </div>
+          <div class="container px-5 py-24 mx-auto">
+            <div class="lg:w-2/3 flex flex-col sm:flex-row sm:items-center items-start mx-auto">
+              <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Click the search button to see the availabe flight </h1>
+              <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Search</button>
+            </div>
+          </div>
+    </form>
+      
+    <table class="w-full border-collapse border border-gray-300 ">
+  <thead>
+    <tr>
+      <th class="border border-gray-300 px-4 py-2">Flight</th>
+      <th class="border border-gray-300 px-4 py-2">Aircraft</th>
+      <th class="border border-gray-300 px-4 py-2">Class</th>
+      <th class="border border-gray-300 px-4 py-2">Fare</th>
+      <th class="border border-gray-300 px-4 py-2">Route</th>
+      <th class="border border-gray-300 px-4 py-2">Departure</th>
+      <th class="border border-gray-300 px-4 py-2">Arrival</th>
+      <th class="border border-gray-300 px-4 py-2">Duration</th>
+      <th class="border border-gray-300 px-4 py-2">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mdata in flightdata %}
+    <tr>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for segment in mdata['itineraries'][0]['segments'] %}
+          {{ segment['carrierCode'] }} {{ segment['aircraft'] }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for segment in mdata['itineraries'][0]['segments'] %}
+          {{ segment['flightNumber'] }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for class in mdata['class'][0] %}
+          {{ class }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for fare in mdata['fareBasis'][0] %}
+          {{ fare }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for segment in mdata['itineraries'][0]['segments'] %}
+          {{ segment['departure']['iataCode'] }}-{{ segment['arrival']['iataCode'] }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for segment in mdata['itineraries'][0]['segments'] %}
+          {{ segment['departure']['at'] }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">
+        {% for segment in mdata['itineraries'][0]['segments'] %}
+          {{ segment['arrival']['at'] }} <br>
+        {% endfor %}
+      </td>
+      
+      <td class="border border-gray-300 px-4 py-2">{{mdata['itineraries'][0]['duration']}}</td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{mdata['price'] }} <br> <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Select</button>
+      </td>
+    </tr>
+      {% endfor %}
+    
+    <!-- Add more rows as needed -->
+  </tbody>
+</table>
+
+      
+      
+      
+  </section>
+{% include "footer.html" %}
